@@ -24,7 +24,7 @@ class AppTest {
     }
 
     @Test
-    @DisplayName("Создание пользователя")
+    @DisplayName("Ошибка несовпадения паролей")
     void passwordMissmatch() {
         User user = new User("f5a8a3cb-4ac9-4b3b-8a65-c424e129b9d6", LocalDateTime.now(), "noisemc_99",
                 "789ghs", "987ghs",
