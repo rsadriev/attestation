@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body>
+<h2>Список пользователей</h2>
+<a href="/customer/add">Добавить</a>
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>Ид</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Баланс</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="customer : ${customers}">
+        <td><a th:href="@{'/customer/' + ${customer.id}}" th:text="${customer.id}"></a></td>
+        <td><span th:text="${customer.name}">Name</span></td>
+        <td><span th:text="${customer.surname}">Surname</span></td>
+        <td><span th:text="${customer.balance}">Balance</span></td>
+        <td><a th:href="@{'/customer/edit/'+${customer.id}}">Редактировать</a></td>
+        <td><a th:href="@{'/customer/delete/'+${customer.id}}">Удалить</a></td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <br>
+    <a href="/stock">Список товаров</a>
+    <a href="/">Главная страница</a>
+</div>
+</body>
+</html>

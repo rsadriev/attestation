@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить товар</title>
+</head>
+<body>
+<form th:action="@{/stock/create}" th:object="${form}" method="post">
+    <table>
+        <tr>
+            <input type="hidden" th:field="${form.id}"/>
+        </tr>
+        <tr>
+            <td>Количество</td>
+            <td><input type="text" th:field="${form.count}"/></td>
+        </tr>
+        <tr>
+            <td>Описание</td>
+            <td><input type="text" th:field="${form.description}"/></td>
+        </tr>
+        <tr>
+            <td>Цена за шт</td>
+            <td><input type="text" th:field="${form.price}"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Создать"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

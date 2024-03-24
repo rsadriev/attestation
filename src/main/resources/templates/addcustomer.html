@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пользователя</title>
+</head>
+<body>
+<h2>Добавить пользователя</h2>
+<form th:action="@{/customer/create}" th:object="${form}" method="post">
+    <table>
+        <tr>
+            <input type="hidden" th:field="${form.id}"/>
+        </tr>
+        <tr>
+            <td>Имя</td>
+            <td><input type="text" th:field="${form.name}"/></td>
+        </tr>
+        <tr>
+            <td>Фамилия</td>
+            <td><input type="text" th:field="${form.surname}"/></td>
+        </tr>
+        <tr>
+            <td>Баланс</td>
+            <td><input type="text" th:field="${form.balance}"/></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Создать"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
