@@ -1,0 +1,22 @@
+version: '3'
+services:
+  spring-service:
+    image: org/final:latest
+    container_name: spring-server
+    network_mode: "host"
+    environment:
+      - PGHOST=127.0.0.1
+      - PGPORT=5432
+      - PGDB=testdb
+      - PGUSER=test
+      - PGPASSWORD=testpass
+  postgres-service:
+    image: postgres:latest
+    container_name: postgres-server
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
+    ports:
+      - 5432:5432
+
