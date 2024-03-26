@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин</title>
+</head>
+<body>
+<h2>Главное меню</h2>
+<span th:text="'Всего ' + ${usersCount} + ' пользователей, ' + ${stocksCount} + ' товаров, ' + ${transactionsCount} + ' операций'"></span>
+<br>
+<br>
+<a href="/stock">Список товаров</a>
+<br>
+<a href="/customer">Список пользователей</a>
+</body>
+</html>

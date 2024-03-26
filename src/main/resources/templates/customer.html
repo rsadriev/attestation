@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${customer.name}"></title>
+    <style>
+        #submitButtonDiv {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h2 th:text="'Добро пожаловать ' + ${customer.name} + ' ' + ${customer.surname}"></h2>
+<label th:text="'Баланс ' + ${customer.balance}"></label>
+<div th:if="${not #lists.isEmpty(customerOrders)}">
+    <h3>Заказы</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Ид</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customerOrder : ${customerOrders}">
+            <td><a th:href="'/stock/'+${customerOrder.stock.id}" th:text="${customerOrder.stock.id}">Id</a></td>
+            <td><span th:text="${customerOrder.stock.description}">Description</span></td>
+            <td><span th:text="${customerOrder.price}">Price</span></td>
+            <td><span th:text="${customerOrder.count}">Count</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${not #lists.isEmpty(stockList)}">
+    <h3>Сделать заказ</h3>
+    <form id="submit-form" th:action="@{'/customer/' + ${customer.id} + '/addStock'}" th:object="${stock}"
+          method="post">
+        <table>
+            <tr>
+                <td>Товар</td>
+                <td>
+                    <select th:field="${stock.stockId}"
+                            onchange="stockChange()">
+                        <option th:each="stockL : ${stockList}"
+                                th:value="${stockL.id}"
+                                th:text="${stockL.description}"
+                                th:stockCount="${stockL.count}"
+                                th:price="${stockL.price}">
+                        </option>
+                        <script>
+                            let _select = document.getElementById('stockId')
+                            for (let i = 0; i < _select.length; i++) {
+                                _select.options[i].maxCount = Math.min(_select.options[i].getAttribute('stockCount'), "[[${customer.balance}]]" / _select.options[i].getAttribute('price'))
+                            }
+                        </script>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Количество</td>
+                <td>
+                    <input type="range"
+                           th:field="${stock.count}"
+                           min="0"
+                           onchange="updateCount(value)"
+                           oninput="updateCount(value)"
+                    />
+                    <script>
+                        document.getElementById('count').max = Math.min(document.getElementById('stockId').options[0].maxCount, "[[${customer.balance}]]" / _select.options[0].getAttribute('price'))
+                        document.getElementById('count').value = 0
+                        document.getElementById('submitButtonDiv').style.display = 'none'
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Цена за штуку</td>
+                <td>
+                    <label id="oneStockPrice">0</label>
+                    <script>document.getElementById('oneStockPrice').innerText = document.getElementById('stockId').options[0].getAttribute('price')</script>
+                </td>
+            </tr>
+            <tr>
+                <td>Общая цена</td>
+                <td>
+                    <label id="stockPrice">0</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Товары
+                </td>
+                <td><label id="rangeCount">0</label></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="submitButtonDiv">
+                        <input type="submit" value="Заказать" id="submitButton"/>
+                    </div>
+                </td>
+            </tr>
+            <script>
+                function updateCount(value) {
+                    document.getElementById('rangeCount').innerText = value
+                    var opts = document.getElementById('stockId')
+                    document.getElementById('stockPrice').innerText = value * opts.options[opts.selectedIndex].getAttribute('price')
+                    if (Math.floor(value) > 0) {
+                        document.getElementById('submitButtonDiv').style.display = 'block'
+                    } else {
+                        document.getElementById('submitButtonDiv').style.display = 'none'
+                    }
+                }
+
+                function stockChange() {
+                    let _doc = document.getElementById('stockId')
+                    document.getElementById('count').max = _doc.options[_doc.selectedIndex].maxCount
+                    document.getElementById('count').value = 0
+                    document.getElementById('stockPrice').innerText = 0
+                    document.getElementById('oneStockPrice').innerText = _doc.options[_doc.selectedIndex].getAttribute('price')
+                    document.getElementById('submitButtonDiv').style.display = 'none'
+                    document.getElementById('rangeCount').innerText = 0
+                }
+
+            </script>
+        </table>
+    </form>
+</div>
+<div>
+    <br>
+    <a href="/customer">Список пользователей</a>
+    <a href="/">Главная страница</a>
+</div>
+</body>
+</html>

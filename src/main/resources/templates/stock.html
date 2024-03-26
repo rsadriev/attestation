@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${stock.description}"></title>
+</head>
+<body>
+<h2 th:text="'Товар ' + ${stock.description}"></h2>
+
+<a th:href="@{'/stock/edit/' + ${stock.id}}">Редактировать</a>
+<br>
+
+<label th:text="'Количество ' + ${stock.count}"></label>
+<br>
+<label th:text="'Цена за шт ' + ${stock.price}"></label>
+
+<div th:if="${not #lists.isEmpty(stockList)}">
+    <h3>Заказы</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Ид</th>
+            <th>Имя</th>
+            <th>Цена</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stockL : ${stockList}">
+            <td><span th:text="${stockL.id}">Id</span></td>
+            <td><a th:text="${stockL.customer.name}" th:href="'/customer/' + ${stockL.customer.id}"></a></td>
+            <td><span th:text="${stockL.price}">Price</span></td>
+            <td><span th:text="${stockL.count}">Count</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <br>
+    <a href="/stock">Товары</a>
+    <a href="/">Главная страница</a>
+</div>
+</body>
+</html>
