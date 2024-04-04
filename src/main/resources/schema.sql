@@ -1,11 +1,20 @@
 --удаление таблиц если существуют
+
+--таблица соответствий между пользователем и товаром (many to many отношение)
 drop table if exists buyer_order;
+--таблица товаров
 drop table if exists stock;
+--таблица пользователей
 drop table if exists buyer;
 
 --создание новых таблиц
+
+--поле id уникальный идентификатор товара, поле description описание товара, поле price цена за единицу товара, поле quant количество доступных единиц товара
 create table if not exists stock (id bigint not null, description text, price real, quant bigint, primary key(id));
+--поле id уникальный идентификатор пользователя, поле name имя пользователя, поле surname фамилия пользователя
 create table if not exists buyer (id bigint not null, name text, surname text, primary key(id));
+--поле stock_id ункиальный идентификатор товара должен содержаться в таблице товаров, поле buyer_id уникальный идентификатор пользователя должен
+--содержаться в таблице пользователей, поле date время совершения покупки, поле order_count количество купленных единиц товара
 create table if not exists buyer_order (stock_id bigint not null, buyer_id bigint not null,
                                         date timestamp, order_count bigint,
                                         foreign key (stock_id) references stock(id) on delete cascade,
