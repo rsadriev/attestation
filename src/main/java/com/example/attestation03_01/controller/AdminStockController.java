@@ -2,12 +2,11 @@ package com.example.attestation03_01.controller;
 
 import com.example.attestation03_01.model.Stock;
 import com.example.attestation03_01.repository.StockRepository;
+import com.example.attestation03_01.service.AdminStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -15,17 +14,17 @@ import java.util.Optional;
 @RequestMapping("/stock")
 public class AdminStockController {
     @Autowired
-    StockRepository stockRepository;
+    AdminStockService adminStockService;
 
-    @RequestMapping("")
+    @GetMapping()
     public String stocks(Model model) {
-        var stockList = stockRepository.findSortedStock();
+        var stockList = adminStockService.findSortedStock();
 
         model.addAttribute("stocks", stockList);
         return "stocks";
     }
 
-    @RequestMapping("/add")
+    @GetMapping("/add")
     public String addStock(Model model) {
         Stock stock = new Stock();
         model.addAttribute("form", stock);
@@ -33,23 +32,23 @@ public class AdminStockController {
         return "addstock";
     }
 
-    @RequestMapping("/create")
+    @PostMapping("/create")
     public String createStock(@ModelAttribute("addCustomer") Stock stock) {
-        stockRepository.save(stock);
+        adminStockService.save(stock);
 
         return "redirect:/stock";
     }
 
-    @RequestMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteStock(@PathVariable Long id) {
-        stockRepository.deleteById(id);
+        adminStockService.deleteById(id);
 
         return "redirect:/stock";
     }
 
-    @RequestMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String editStock(Model model, @PathVariable Long id) {
-        Optional<Stock> stock = stockRepository.findById(id);
+        Optional<Stock> stock = adminStockService.findById(id);
 
         model.addAttribute("form", stock);
 
